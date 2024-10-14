@@ -1,38 +1,103 @@
-import CardList from "../components/Posts/CardList"
-import ViewUserButton from "../components/Posts/ViewUserButton"
+import dataJson from "../../public/data/data.json"; 
+import CardList from "../components/Posts/CardList";
+import ViewUserButton from "../components/Posts/ViewUserButton";
 
-const base_url = "https://jsonplaceholder.typicode.com/posts"
 
-interface Iposts {
-    userId: number,
-    id: number,
-    title: string,
-    body: string
+interface IUser {
+  id: number;
+  name: string;
+  hobbies?: { id: number; name: string }[];
+  age: number;
+  address: string;
+  city: string;
+  phone: string;
 }
 
-const Posts = async() => {
-    const response = await fetch(base_url, {
-        cache: "no-store"
-    })
-    const posts: Iposts[] = await response.json()
-    return (
-        <div>
-        <p>{new Date().toLocaleTimeString()}</p>
-        <h1 className="text-fuchsia-300">POSTINGAN PAGE</h1>
-        {posts.map((post) =>{
-            return (
-                <CardList key={post.id}>
-                <p>{post.id}</p>
-                <i>{post.title}</i>
-                <p>{post.body}</p>
-                <ViewUserButton userId={post.userId}/>
-                </CardList>
-            )
-        })}
-        
-                
-        </div>
-    )
-}
+const UserList = () => {
+  const users: IUser[] = dataJson;
 
-export default Posts
+  const getSemuanya = () =>users;
+
+  const getDataDenganNama =  (name: string) => {
+    return users.filter(user => user.name.toLowerCase().includes(name.toLowerCase()));
+  };
+
+  const getDataAlamat = (city: string) => {
+    return users.filter(user => user.city.toLowerCase() === city.toLowerCase());
+  };
+
+  const getDataUmur = (minAge: number) => {
+    return users.filter(user => user.age >= minAge);
+  };
+
+  //Filterisasi Data
+  const semuaUser = getSemuanya();
+  const namaJohn = getDataDenganNama("John");
+  const alamatNewYork = getDataAlamat("New York");
+  const umurTigaPuluh = getDataUmur(30);
+
+  return (
+    <>
+      <p>{new Date().toLocaleTimeString()}</p>
+      <h1 className="text-fuchsia-500">HALAMAN PENGGUNA</h1>
+      <center><h3>TAMPIL SEMUA DATA</h3></center>
+      {users.map((user) => (
+        <CardList key={user.id}>
+          <p>Nama: {user.name}</p>
+          {user.hobbies && user.hobbies.length > 0 && (
+            <p>Hobi: {user.hobbies.map(hobby => hobby.name).join(", ")}</p>
+          )}
+          <p>Umur: {user.age}</p>
+          <p>Alamat: {user.address}</p>
+          <p>Kota: {user.city}</p>
+          <p>Nomor HP: {user.phone}</p>
+          <ViewUserButton userId={user.id} />
+        </CardList>
+      ))}
+      <center><h3>TAMPIL DATA DENGAN NAMA TERTENTU ("Jhon")</h3></center>
+      {namaJohn.map((user) => (
+        <CardList key={user.id}>
+          <p>Nama: {user.name}</p>
+          {user.hobbies && user.hobbies.length > 0 && (
+            <p>Hobi: {user.hobbies.map(hobby => hobby.name).join(", ")}</p>
+          )}
+          <p>Umur: {user.age}</p>
+          <p>Alamat: {user.address}</p>
+          <p>Kota: {user.city}</p>
+          <p>Nomor HP: {user.phone}</p>
+          <ViewUserButton userId={user.id} />
+        </CardList>
+      ))}
+      <center><h3>TAMPIL DATA DENGAN ALAMAT NEW YORK</h3></center>
+      {alamatNewYork.map((user) => (
+        <CardList key={user.id}>
+          <p>Nama: {user.name}</p>
+          {user.hobbies && user.hobbies.length > 0 && (
+            <p>Hobi: {user.hobbies.map(hobby => hobby.name).join(", ")}</p>
+          )}
+          <p>Umur: {user.age}</p>
+          <p>Alamat: {user.address}</p>
+          <p>Kota: {user.city}</p>
+          <p>Nomor HP: {user.phone}</p>
+          <ViewUserButton userId={user.id} />
+        </CardList>
+      ))}
+      <center><h3>TAMPIL DATA DENGAN UMUR LEBIH DARI 30 TAHUN</h3></center>
+      {umurTigaPuluh.map((user) => (
+        <CardList key={user.id}>
+          <p>Nama: {user.name}</p>
+          {user.hobbies && user.hobbies.length > 0 && (
+            <p>Hobi: {user.hobbies.map(hobby => hobby.name).join(", ")}</p>
+          )}
+          <p>Umur: {user.age}</p>
+          <p>Alamat: {user.address}</p>
+          <p>Kota: {user.city}</p>
+          <p>Nomor HP: {user.phone}</p>
+          <ViewUserButton userId={user.id} />
+        </CardList>
+      ))}
+    </>
+  );
+};
+
+export default UserList;
