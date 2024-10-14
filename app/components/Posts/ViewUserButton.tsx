@@ -1,18 +1,17 @@
-"use client";
+'use client';
 
 interface ViewUserButtonProps {
-    userId: number;
+  userId: number;
 }
 
-const ViewUserButton: React.FC<ViewUserButtonProps> = ({userId}) => {
-    const handleClick = () => alert(`user id: ${userId}`);
+const ViewUserButton: React.FC<ViewUserButtonProps> = ({ userId }) => {
+  const handleClick = () => alert(`user id: ${userId}`);
+  
+  return (
+    <>
+      <button onClick={handleClick}>Lihat User</button>
+    </>
+  );
+};
 
-    return (
-        <div>
-        <button onClick={handleClick}>Lihat User</button>
-        </div>
-    )
-        
-}
-
-export default ViewUserButton
+export default ViewUserButton;
